@@ -17,7 +17,7 @@ def get_oven_operations_specification_by_batch(batch_no):
         frappe.throw(f"Item not found for batch number: {batch_no}")
 
     # Retrieve the OvenOperationsSpecification document by the item
-    oven_operations_specification = frappe.get_all('Oven Operations Specification', filters={'product': item})
+    oven_operations_specification = frappe.get_all('Oven Operations Specification', filters={'product': item},fields=['*'])
 
     if not oven_operations_specification:
         frappe.throw(f"Oven Operations Specification not found for item: {item}")
