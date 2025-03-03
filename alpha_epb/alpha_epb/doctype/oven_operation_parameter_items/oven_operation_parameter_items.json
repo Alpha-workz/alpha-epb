@@ -23,17 +23,20 @@
   {
    "fieldname": "workstation_type",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "WorkStation Type",
    "options": "Workstation Type"
   },
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
+   "in_list_view": 1,
    "label": "Description"
   },
   {
    "fieldname": "parameter",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Parameter"
   },
   {
@@ -43,31 +46,37 @@
   {
    "fieldname": "min_value",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Min Value"
   },
   {
    "fieldname": "value",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Value"
   },
   {
    "fieldname": "max_value",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Max Value"
   },
   {
    "fieldname": "ref_id",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Ref ID"
   },
   {
    "fieldname": "sub_parameter",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Sub Parameter"
   },
   {
    "fieldname": "remarks",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Remarks"
   },
   {
@@ -82,7 +91,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-03-03 12:07:03.679397",
+ "modified": "2025-03-03 20:55:08.767104",
  "modified_by": "Administrator",
  "module": "Alpha Epb",
  "name": "Oven Operation Parameter Items",
