@@ -1,0 +1,96 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-03 11:54:34.284315",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_kbel",
+  "product",
+  "column_break_xerf",
+  "operation",
+  "section_break_xahw",
+  "parameters",
+  "section_break_hlbq",
+  "inspection",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_kbel",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "product",
+   "fieldtype": "Link",
+   "label": "Product",
+   "options": "Item"
+  },
+  {
+   "fieldname": "operation",
+   "fieldtype": "Link",
+   "label": "Operation",
+   "options": "Operation"
+  },
+  {
+   "fieldname": "parameters",
+   "fieldtype": "Table",
+   "label": "Parameters ",
+   "options": "Oven Operation Parameter Items"
+  },
+  {
+   "fieldname": "column_break_xerf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_hlbq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "inspection",
+   "fieldtype": "Table",
+   "label": "Inspection",
+   "options": "Operations Specification Inspection Item"
+  },
+  {
+   "fieldname": "section_break_xahw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Oven Operations Specification",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-03-03 12:14:45.734415",
+ "modified_by": "Administrator",
+ "module": "Alpha Epb",
+ "name": "Oven Operations Specification",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,94 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-03-03 11:57:33.379294",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "workstation_type",
+  "description",
+  "parameter",
+  "column_break_urkc",
+  "value",
+  "sub_parameter",
+  "column_break_welv",
+  "min_value",
+  "max_value",
+  "section_break_pvjb",
+  "ref_id",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "workstation_type",
+   "fieldtype": "Link",
+   "label": "WorkStation Type",
+   "options": "Workstation Type"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "parameter",
+   "fieldtype": "Data",
+   "label": "Parameter"
+  },
+  {
+   "fieldname": "column_break_urkc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "min_value",
+   "fieldtype": "Data",
+   "label": "Min Value"
+  },
+  {
+   "fieldname": "value",
+   "fieldtype": "Data",
+   "label": "Value"
+  },
+  {
+   "fieldname": "max_value",
+   "fieldtype": "Data",
+   "label": "Max Value"
+  },
+  {
+   "fieldname": "ref_id",
+   "fieldtype": "Data",
+   "label": "Ref ID"
+  },
+  {
+   "fieldname": "sub_parameter",
+   "fieldtype": "Data",
+   "label": "Sub Parameter"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "column_break_welv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_pvjb",
+   "fieldtype": "Section Break"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-03-03 12:07:03.679397",
+ "modified_by": "Administrator",
+ "module": "Alpha Epb",
+ "name": "Oven Operation Parameter Items",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
