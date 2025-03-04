@@ -1,12 +1,7 @@
-# Copyright (c) 2025, AlphaWorkz and contributors
-# For license information, please see license.txt
 
 import frappe
 from frappe.model.document import Document
 from frappe import whitelist
-
-class OvenOperationsSpecification(Document):
-    pass
 
 @frappe.whitelist()
 def get_oven_operations_specification_by_batch(batch_no):
