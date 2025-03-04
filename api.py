@@ -4,7 +4,7 @@ from frappe.model.document import Document
 from frappe import whitelist
 
 @frappe.whitelist()
-def get_oven_operations_specification_by_batch(batch_no):
+def get_oven_operations_specification(batch_no):
     # Find the item linked with the batch
     item = frappe.db.get_value('Batch', {'name': batch_no}, 'item')
 
