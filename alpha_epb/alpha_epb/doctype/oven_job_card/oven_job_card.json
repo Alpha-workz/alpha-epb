@@ -35,12 +35,12 @@
   },
   {
    "fieldname": "starting_temperature",
-   "fieldtype": "Time",
+   "fieldtype": "Float",
    "label": "Starting temperature (oven temperature)"
   },
   {
    "fieldname": "closing_temperature",
-   "fieldtype": "Time",
+   "fieldtype": "Float",
    "label": "Closing temperature (oven temperature)"
   },
   {
@@ -86,7 +86,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-03-03 11:51:41.814419",
+ "modified": "2025-03-05 09:58:17.136085",
  "modified_by": "Administrator",
  "module": "Alpha Epb",
  "name": "Oven Job Card",

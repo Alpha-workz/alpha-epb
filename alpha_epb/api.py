@@ -69,6 +69,34 @@ def get_oven_job_card(batch_no,job_card_no):
 
 @frappe.whitelist()
 def update_oven_job_card(job_card_no, closing_temperature=0):
+    """
+    Update the status and closing temperature of an Oven Job Card.
+
+    This function updates the specified Oven Job Card with the provided closing temperature,
+    sets its status to "Completed", records the end time, and submits the changes to the database.
+
+    Args:
+        job_card_no (str): The unique identifier of the Oven Job Card to be updated.
+        closing_temperature (int, optional): The closing temperature to be recorded. Defaults to 0.
+
+    Returns:
+        dict: A dictionary representation of the updated Oven Job Card.
+
+    Raises:
+        frappe.DoesNotExistError: If the specified Oven Job Card does not exist.
+        frappe.ValidationError: If there is an issue with the data validation.
+        frappe.PermissionError: If the user does not have permission to update the Oven Job Card.
+
+    Example:
+        >>> update_oven_job_card("JOB12345", 200)
+        {
+            'name': 'JOB12345',
+            'closing_temperature': 200,
+            'status': 'Completed',
+            'end_time': '2023-10-05 14:30:00',
+            ...
+        }
+    """
     job_card = frappe.get_doc('Oven Job Card', job_card_no)
     job_card.closing_temperature = closing_temperature
     job_card.status = "Completed"
