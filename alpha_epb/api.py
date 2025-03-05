@@ -1,4 +1,3 @@
-
 import frappe
 from frappe.model.document import Document
 from frappe import whitelist
@@ -69,34 +68,7 @@ def get_oven_job_card(batch_no,job_card_no):
 
 @frappe.whitelist()
 def update_oven_job_card(job_card_no, closing_temperature=0):
-    """
-    Update the status and closing temperature of an Oven Job Card.
 
-    This function updates the specified Oven Job Card with the provided closing temperature,
-    sets its status to "Completed", records the end time, and submits the changes to the database.
-
-    Args:
-        job_card_no (str): The unique identifier of the Oven Job Card to be updated.
-        closing_temperature (int, optional): The closing temperature to be recorded. Defaults to 0.
-
-    Returns:
-        dict: A dictionary representation of the updated Oven Job Card.
-
-    Raises:
-        frappe.DoesNotExistError: If the specified Oven Job Card does not exist.
-        frappe.ValidationError: If there is an issue with the data validation.
-        frappe.PermissionError: If the user does not have permission to update the Oven Job Card.
-
-    Example:
-        >>> update_oven_job_card("JOB12345", 200)
-        {
-            'name': 'JOB12345',
-            'closing_temperature': 200,
-            'status': 'Completed',
-            'end_time': '2023-10-05 14:30:00',
-            ...
-        }
-    """
     job_card = frappe.get_doc('Oven Job Card', job_card_no)
     job_card.closing_temperature = closing_temperature
     job_card.status = "Completed"
@@ -104,3 +76,117 @@ def update_oven_job_card(job_card_no, closing_temperature=0):
     job_card.submit()
     frappe.db.commit()
     return job_card.as_dict()
+
+@frappe.whitelist()
+def get_running_oven_jobs():
+    """
+    Get all running oven job cards.
+    
+    Returns:
+        list: List of running oven job cards
+    """
+    jobs = frappe.get_all('Oven Job Card', 
+        filters={'status': 'Running'},
+        fields=['name', 'batch_number', 'workstation', 'operator', 'start_time', 'starting_temperature']
+    )
+    return jobs
+
+@frappe.whitelist()
+def cancel_oven_job_card(job_card_no, reason=None):
+    """
+    Cancel an Oven Job Card
+    
+    Args:
+        job_card_no (str): The job card to cancel
+        reason (str, optional): Reason for cancellation
+    
+    Returns:
+        dict: The updated job card
+    """
+    try:
+        job_card = frappe.get_doc('Oven Job Card', job_card_no)
+        job_card.status = "Cancelled"
+        job_card.end_time = now()
+        job_card.cancellation_reason = reason
+        job_card.save()
+        frappe.db.commit()
+        return job_card.as_dict()
+    except Exception as e:
+        frappe.log_error(f"Error cancelling Oven Job Card: {str(e)}")
+        frappe.throw(f"Error cancelling Oven Job Card: {str(e)}")
+
+@frappe.whitelist()
+def pause_oven_job_card(job_card_no, reason=None):
+    """
+    Pause a running Oven Job Card
+    
+    Args:
+        job_card_no (str): The job card to pause
+        reason (str, optional): Reason for pausing
+    
+    Returns:
+        dict: The updated job card
+    """
+    try:
+        job_card = frappe.get_doc('Oven Job Card', job_card_no)
+        if job_card.status != "Running":
+            frappe.throw("Can only pause running job cards")
+            
+        job_card.status = "Paused"
+        job_card.pause_reason = reason
+        job_card.pause_time = now()
+        job_card.save()
+        frappe.db.commit()
+        return job_card.as_dict()
+    except Exception as e:
+        frappe.log_error(f"Error pausing Oven Job Card: {str(e)}")
+        frappe.throw(f"Error pausing Oven Job Card: {str(e)}")
+
+@frappe.whitelist()
+def resume_oven_job_card(job_card_no):
+    """
+    Resume a paused Oven Job Card
+    
+    Args:
+        job_card_no (str): The job card to resume
+    
+    Returns:
+        dict: The updated job card
+    """
+    try:
+        job_card = frappe.get_doc('Oven Job Card', job_card_no)
+        if job_card.status != "Paused":
+            frappe.throw("Can only resume paused job cards")
+            
+        job_card.status = "Running"
+        job_card.resume_time = now()
+        job_card.save()
+        frappe.db.commit()
+        return job_card.as_dict()
+    except Exception as e:
+        frappe.log_error(f"Error resuming Oven Job Card: {str(e)}")
+        frappe.throw(f"Error resuming Oven Job Card: {str(e)}")
+
+@frappe.whitelist()
+def get_oven_job_card_history(batch_no):
+    """
+    Get history of all oven job cards for a batch
+    
+    Args:
+        batch_no (str): Batch number to get history for
+    
+    Returns:
+        list: List of job cards for the batch
+    """
+    try:
+        jobs = frappe.get_all('Oven Job Card',
+            filters={'batch_number': batch_no},
+            fields=['name', 'status', 'start_time', 'end_time', 
+                   'starting_temperature', 'closing_temperature',
+                   'operator', 'workstation'],
+            order_by='creation desc'
+        )
+        return jobs
+    except Exception as e:
+        frappe.log_error(f"Error fetching Oven Job Card history: {str(e)}")
+        frappe.throw(f"Error fetching Oven Job Card history: {str(e)}")
