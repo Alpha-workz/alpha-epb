@@ -4,25 +4,80 @@ from frappe import whitelist
 from frappe.utils.data import now
 
 @frappe.whitelist()
-def get_oven_operations_specification(batch_no):
-    # Find the item linked with the batch
-    item = frappe.db.get_value('Batch', {'name': batch_no}, 'item')
-
-    if not item:
-        frappe.throw(f"Item not found for batch number: {batch_no}")
-
-    # Get the first matching Oven Operations Specification
-    oven_spec_name = frappe.db.get_value('Oven Operations Specification', {'product': item}, 'name')
-
+# find the batch number using the spp ref number ex 2501dbbm
+# from moulding production entry find submitted stock entry and get the batch number and item details
+def get_oven_operations_specification(spp_ref_number):
+    """
+    Find batch number and oven operations specification using SPP reference number
+    
+    Args:
+        spp_ref_number: SPP reference number (e.g., "25F07X05")
+        
+    Returns:
+        dict: Complete oven operations specification with batch and item details
+    """
+    
+    # Step 1: Find Moulding Production Entry using scan_lot_number
+    moulding_entry = frappe.db.get_value(
+        'Moulding Production Entry', 
+        {'scan_lot_number': spp_ref_number, 'docstatus': 1}, 
+        ['name', 'stock_entry_reference', 'item_to_produce']
+    )
+    
+    if not moulding_entry:
+        frappe.throw(f"No submitted Moulding Production Entry found for SPP ref number: {spp_ref_number}")
+    
+    moulding_name, stock_entry_ref, item_to_produce = moulding_entry
+    
+    # Step 2: Get the Stock Entry and find the finished item batch
+    if not stock_entry_ref:
+        frappe.throw(f"No stock entry reference found in Moulding Production Entry: {moulding_name}")
+    
+    # Find the finished item in stock entry with matching spp_batch_number
+    stock_entry_item = frappe.db.get_value(
+        'Stock Entry Detail',
+        {
+            'parent': stock_entry_ref,
+            'spp_batch_number': spp_ref_number,
+            'is_finished_item': 1
+        },
+        ['batch_no', 'item_code', 'qty']
+    )
+    
+    if not stock_entry_item:
+        frappe.throw(f"No finished item found in Stock Entry {stock_entry_ref} with SPP batch number: {spp_ref_number}")
+    
+    batch_no, item_code, qty = stock_entry_item
+    
+    # Step 3: Verify the batch exists
+    batch_exists = frappe.db.exists('Batch', batch_no)
+    if not batch_exists:
+        frappe.throw(f"Batch {batch_no} not found in system")
+    
+    # Step 4: Get the Oven Operations Specification for the item
+    oven_spec_name = frappe.db.get_value('Oven Operations Specification', {'product': item_code}, 'name')
+    
     if not oven_spec_name:
-        frappe.throw(f"Oven Operations Specification not found for item: {item}")
-
-    # Load the complete document including child tables
+        frappe.throw(f"Oven Operations Specification not found for item: {item_code}")
+    
+    # Step 5: Load the complete document including child tables
     oven_spec_doc = frappe.get_doc('Oven Operations Specification', oven_spec_name)
     
-    return oven_spec_doc.as_dict()
-
-# ... existing code ...
+    # Step 6: Add batch and item details to the response
+    response = oven_spec_doc.as_dict()
+    response.update({
+        'batch_details': {
+            'batch_no': batch_no,
+            'item_code': item_code,
+            'item_to_produce': item_to_produce,
+            'qty': qty,
+            'spp_ref_number': spp_ref_number,
+            'moulding_entry': moulding_name,
+            'stock_entry_reference': stock_entry_ref
+        }
+    })
+    
+    return response
 
 @frappe.whitelist()
 def create_oven_job_card(batch_number, qty, workstation, operator=None, starting_temperature=0, closing_temperature=0):
@@ -190,3 +245,40 @@ def get_oven_job_card_history(batch_no):
     except Exception as e:
         frappe.log_error(f"Error fetching Oven Job Card history: {str(e)}")
         frappe.throw(f"Error fetching Oven Job Card history: {str(e)}")
+
+@frappe.whitelist()
+def get_oven_operations_specification_by_batch(batch_no):
+    """
+    Get oven operations specification using batch number directly
+    
+    Args:
+        batch_no: Batch number (e.g., "T25F07X05")
+        
+    Returns:
+        dict: Complete oven operations specification with batch details
+    """
+    # Find the item linked with the batch
+    item = frappe.db.get_value('Batch', {'name': batch_no}, 'item')
+
+    if not item:
+        frappe.throw(f"Item not found for batch number: {batch_no}")
+
+    # Get the first matching Oven Operations Specification
+    oven_spec_name = frappe.db.get_value('Oven Operations Specification', {'product': item}, 'name')
+
+    if not oven_spec_name:
+        frappe.throw(f"Oven Operations Specification not found for item: {item}")
+
+    # Load the complete document including child tables
+    oven_spec_doc = frappe.get_doc('Oven Operations Specification', oven_spec_name)
+    
+    # Add batch details to the response
+    response = oven_spec_doc.as_dict()
+    response.update({
+        'batch_details': {
+            'batch_no': batch_no,
+            'item_code': item
+        }
+    })
+    
+    return response
