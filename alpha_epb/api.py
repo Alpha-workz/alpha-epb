@@ -5,7 +5,7 @@ from frappe.utils.data import now
 
 @frappe.whitelist()
 # find the batch number using the spp ref number ex 2501dbbm
-# from moulding production entry find submitted stock entry and get the batch number and item details
+# directly from stock entry find the batch number and item details where item group is Products
 def get_oven_operations_specification(spp_ref_number):
     """
     Find batch number and oven operations specification using SPP reference number
@@ -17,63 +17,56 @@ def get_oven_operations_specification(spp_ref_number):
         dict: Complete oven operations specification with batch and item details
     """
     
-    # Step 1: Find Moulding Production Entry using scan_lot_number
-    moulding_entry = frappe.db.get_value(
-        'Moulding Production Entry', 
-        {'scan_lot_number': spp_ref_number, 'docstatus': 1}, 
-        ['name', 'stock_entry_reference', 'item_to_produce']
-    )
+    # Step 1: Find Stock Entry Detail with matching spp_batch_number and item group "Products"
+    stock_entry_query = """
+        SELECT SED.batch_no, SED.item_code, SED.qty, SED.parent as stock_entry_name, SED.t_warehouse
+        FROM `tabStock Entry Detail` SED 
+        INNER JOIN `tabStock Entry` SE ON SED.parent = SE.name
+        INNER JOIN `tabItem` I ON SED.item_code = I.name
+        WHERE SED.spp_batch_number = %s 
+        AND I.item_group = 'Products'
+        AND SE.docstatus = 1
+        AND SED.is_finished_item = 1
+        ORDER BY SE.creation DESC
+        LIMIT 1
+    """
     
-    if not moulding_entry:
-        frappe.throw(f"No submitted Moulding Production Entry found for SPP ref number: {spp_ref_number}")
+    stock_entry_result = frappe.db.sql(stock_entry_query, (spp_ref_number,), as_dict=1)
     
-    moulding_name, stock_entry_ref, item_to_produce = moulding_entry
+    if not stock_entry_result:
+        frappe.throw(f"No Stock Entry found for SPP ref number: {spp_ref_number} with item group 'Products'")
     
-    # Step 2: Get the Stock Entry and find the finished item batch
-    if not stock_entry_ref:
-        frappe.throw(f"No stock entry reference found in Moulding Production Entry: {moulding_name}")
+    stock_entry_data = stock_entry_result[0]
+    batch_no = stock_entry_data.get('batch_no')
+    item_code = stock_entry_data.get('item_code')
+    qty = stock_entry_data.get('qty')
+    stock_entry_name = stock_entry_data.get('stock_entry_name')
+    warehouse = stock_entry_data.get('t_warehouse')
     
-    # Find the finished item in stock entry with matching spp_batch_number
-    stock_entry_item = frappe.db.get_value(
-        'Stock Entry Detail',
-        {
-            'parent': stock_entry_ref,
-            'spp_batch_number': spp_ref_number,
-            'is_finished_item': 1
-        },
-        ['batch_no', 'item_code', 'qty']
-    )
-    
-    if not stock_entry_item:
-        frappe.throw(f"No finished item found in Stock Entry {stock_entry_ref} with SPP batch number: {spp_ref_number}")
-    
-    batch_no, item_code, qty = stock_entry_item
-    
-    # Step 3: Verify the batch exists
+    # Step 2: Verify the batch exists
     batch_exists = frappe.db.exists('Batch', batch_no)
     if not batch_exists:
         frappe.throw(f"Batch {batch_no} not found in system")
     
-    # Step 4: Get the Oven Operations Specification for the item
+    # Step 3: Get the Oven Operations Specification for the item
     oven_spec_name = frappe.db.get_value('Oven Operations Specification', {'product': item_code}, 'name')
     
     if not oven_spec_name:
         frappe.throw(f"Oven Operations Specification not found for item: {item_code}")
     
-    # Step 5: Load the complete document including child tables
+    # Step 4: Load the complete document including child tables
     oven_spec_doc = frappe.get_doc('Oven Operations Specification', oven_spec_name)
     
-    # Step 6: Add batch and item details to the response
+    # Step 5: Add batch and item details to the response
     response = oven_spec_doc.as_dict()
     response.update({
         'batch_details': {
             'batch_no': batch_no,
             'item_code': item_code,
-            'item_to_produce': item_to_produce,
             'qty': qty,
             'spp_ref_number': spp_ref_number,
-            'moulding_entry': moulding_name,
-            'stock_entry_reference': stock_entry_ref
+            'stock_entry_reference': stock_entry_name,
+            'warehouse': warehouse
         }
     })
     
