@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "prompt",
+ "creation": "2026-07-22 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "header_section",
+  "item_code",
+  "column_break_header",
+  "mixing_center",
+  "batch_weight",
+  "sequence_section",
+  "sequence_items",
+  "parameters_section",
+  "parameters"
+ ],
+ "fields": [
+  {
+   "fieldname": "header_section",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_header",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mixing_center",
+   "fieldtype": "Link",
+   "label": "Mixing Center",
+   "options": "Workstation"
+  },
+  {
+   "description": "Batch weight",
+   "fieldname": "batch_weight",
+   "fieldtype": "Float",
+   "label": "Batch Weight"
+  },
+  {
+   "fieldname": "sequence_section",
+   "fieldtype": "Section Break",
+   "label": "Mixing Sequence"
+  },
+  {
+   "fieldname": "sequence_items",
+   "fieldtype": "Table",
+   "label": "Sequence",
+   "options": "Mixing Sequence Item"
+  },
+  {
+   "fieldname": "parameters_section",
+   "fieldtype": "Section Break",
+   "label": "Parameters Table"
+  },
+  {
+   "fieldname": "parameters",
+   "fieldtype": "Table",
+   "label": "Parameters",
+   "options": "Mixing Sequence Parameter"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-07-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Alpha Epb",
+ "name": "Mixing Sequence",
+ "naming_rule": "Set by user",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

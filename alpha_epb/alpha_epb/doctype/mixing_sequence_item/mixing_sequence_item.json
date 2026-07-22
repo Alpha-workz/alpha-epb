@@ -1,0 +1,75 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-07-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "sl_no",
+  "sequence",
+  "duration",
+  "input_item",
+  "column_break_wt",
+  "wt",
+  "mixing_seq_ref_list"
+ ],
+ "fields": [
+  {
+   "fieldname": "sl_no",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Sl No"
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Sequence"
+  },
+  {
+   "description": "Duration in minutes",
+   "fieldname": "duration",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Duration"
+  },
+  {
+   "fieldname": "input_item",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Input Item",
+   "options": "Item",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_wt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wt",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Wt"
+  },
+  {
+   "description": "Multiselect / comma-separated list. Fill ONLY when the input item is NOT raw material.",
+   "fieldname": "mixing_seq_ref_list",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Mixing Seq Ref List"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Alpha Epb",
+ "name": "Mixing Sequence Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

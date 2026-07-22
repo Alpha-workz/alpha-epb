@@ -273,5 +273,84 @@ def get_oven_operations_specification_by_batch(batch_no):
             'item_code': item
         }
     })
-    
+
     return response
+
+
+# ---------------------------------------------------------------------------
+# Mixing Sequence endpoints
+# ---------------------------------------------------------------------------
+
+@frappe.whitelist()
+def create_mixing_sequence(mixing_sequence_id, item_code, mixing_center=None,
+                           batch_weight=0, sequence_items=None, parameters=None,
+                           submit=False):
+    """
+    Create a new Mixing Sequence.
+
+    Args:
+        mixing_sequence_id: The name/ID for the record (e.g. "C_6122-002"). Naming is manual.
+        item_code: Item this mixing sequence is for.
+        mixing_center: Workstation (mixing center) where mixing happens.
+        batch_weight: Batch weight for the sequence.
+        sequence_items: List of dicts for the Sequence table
+                        (sl_no, sequence, duration, input_item, wt, mixing_seq_ref_list).
+        parameters: List of dicts for the Parameters table
+                    (parameters_group, parameter, min_value, max_value, uom,
+                     pre_post_during, sequence, remarks).
+        submit: When truthy, submit the document after inserting.
+
+    Returns:
+        dict: status, message and the created document.
+    """
+    if isinstance(sequence_items, str):
+        sequence_items = frappe.parse_json(sequence_items)
+    if isinstance(parameters, str):
+        parameters = frappe.parse_json(parameters)
+
+    try:
+        doc = frappe.get_doc({
+            "doctype": "Mixing Sequence",
+            "__newname": mixing_sequence_id,
+            "item_code": item_code,
+            "mixing_center": mixing_center,
+            "batch_weight": batch_weight,
+            "sequence_items": sequence_items or [],
+            "parameters": parameters or [],
+        })
+
+        doc.insert()
+        if submit and str(submit).lower() not in ("0", "false"):
+            doc.submit()
+        frappe.db.commit()
+
+        return {
+            "status": "success",
+            "message": "Mixing Sequence created successfully",
+            "mixing_sequence": doc.as_dict(),
+        }
+
+    except Exception as e:
+        frappe.log_error(f"Error creating Mixing Sequence: {str(e)}")
+        frappe.throw(f"Error creating Mixing Sequence: {str(e)}")
+
+
+@frappe.whitelist()
+def get_mixing_sequence(name):
+    """Load a complete Mixing Sequence (including its child tables) by name."""
+    if not frappe.db.exists('Mixing Sequence', name):
+        frappe.throw(f"Mixing Sequence not found: {name}")
+    return frappe.get_doc('Mixing Sequence', name).as_dict()
+
+
+@frappe.whitelist()
+def get_mixing_sequences_by_item(item_code):
+    """Return all Mixing Sequences defined for a given item, newest first."""
+    names = frappe.get_all(
+        'Mixing Sequence',
+        filters={'item_code': item_code},
+        order_by='creation desc',
+        pluck='name',
+    )
+    return [frappe.get_doc('Mixing Sequence', n).as_dict() for n in names]
+

@@ -1,0 +1,87 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-07-22 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "parameters_group",
+  "parameter",
+  "min_value",
+  "max_value",
+  "uom",
+  "column_break_seq",
+  "pre_post_during",
+  "sequence",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "parameters_group",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Parameters Group",
+   "options": "\nPrerequisite\nMid\nRecord"
+  },
+  {
+   "fieldname": "parameter",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Parameters"
+  },
+  {
+   "fieldname": "min_value",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Min"
+  },
+  {
+   "fieldname": "max_value",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Max"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "UOM"
+  },
+  {
+   "fieldname": "column_break_seq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "pre_post_during",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Pre / Post / During",
+   "options": "\nPre\nPost\nDuring"
+  },
+  {
+   "fieldname": "sequence",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Sequence"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-22 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Alpha Epb",
+ "name": "Mixing Sequence Parameter",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
