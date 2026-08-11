@@ -9,10 +9,15 @@
   "header_section",
   "item_code",
   "column_break_header",
+  "bom",
+  "batch_section",
   "mixing_center",
+  "column_break_batch",
   "batch_weight",
   "sequence_section",
-  "sequence_items",
+  "sequence_steps",
+  "bom_item_section",
+  "bom_items",
   "parameters_section",
   "parameters"
  ],
@@ -33,10 +38,24 @@
    "fieldtype": "Column Break"
   },
   {
+   "fieldname": "bom",
+   "fieldtype": "Link",
+   "label": "BOM",
+   "options": "BOM"
+  },
+  {
+   "fieldname": "batch_section",
+   "fieldtype": "Section Break"
+  },
+  {
    "fieldname": "mixing_center",
    "fieldtype": "Link",
    "label": "Mixing Center",
    "options": "Workstation"
+  },
+  {
+   "fieldname": "column_break_batch",
+   "fieldtype": "Column Break"
   },
   {
    "description": "Batch weight",
@@ -47,12 +66,23 @@
   {
    "fieldname": "sequence_section",
    "fieldtype": "Section Break",
-   "label": "Mixing Sequence"
+   "label": "Sequence Table"
   },
   {
-   "fieldname": "sequence_items",
+   "fieldname": "sequence_steps",
    "fieldtype": "Table",
    "label": "Sequence",
+   "options": "Mixing Sequence Step"
+  },
+  {
+   "fieldname": "bom_item_section",
+   "fieldtype": "Section Break",
+   "label": "BOM Item Table"
+  },
+  {
+   "fieldname": "bom_items",
+   "fieldtype": "Table",
+   "label": "BOM Items",
    "options": "Mixing Sequence Item"
   },
   {

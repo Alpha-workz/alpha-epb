@@ -6,8 +6,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "parameters_group",
   "parameter",
+  "type",
   "min_value",
   "max_value",
   "uom",
@@ -18,17 +18,17 @@
  ],
  "fields": [
   {
-   "fieldname": "parameters_group",
-   "fieldtype": "Select",
-   "in_list_view": 1,
-   "label": "Parameters Group",
-   "options": "\nPrerequisite\nMid\nRecord"
-  },
-  {
    "fieldname": "parameter",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Parameters"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Type",
+   "options": "\nNumeric\nData\nBinary\nComment"
   },
   {
    "fieldname": "min_value",

@@ -8,7 +8,6 @@
  "field_order": [
   "sl_no",
   "sequence",
-  "duration",
   "input_item",
   "column_break_wt",
   "wt",
@@ -26,13 +25,6 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Sequence"
-  },
-  {
-   "description": "Duration in minutes",
-   "fieldname": "duration",
-   "fieldtype": "Float",
-   "in_list_view": 1,
-   "label": "Duration"
   },
   {
    "fieldname": "input_item",
