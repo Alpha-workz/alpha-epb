@@ -10,6 +10,8 @@
   "type",
   "min_value",
   "max_value",
+  "value",
+  "binary_value",
   "uom",
   "column_break_seq",
   "pre_post_during",
@@ -31,16 +33,33 @@
    "options": "\nNumeric\nData\nBinary\nComment"
   },
   {
+   "depends_on": "eval:doc.type==\"Numeric\"",
    "fieldname": "min_value",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Min"
   },
   {
+   "depends_on": "eval:doc.type==\"Numeric\"",
    "fieldname": "max_value",
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Max"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Data\"||doc.type==\"Comment\"",
+   "fieldname": "value",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Value"
+  },
+  {
+   "depends_on": "eval:doc.type==\"Binary\"",
+   "fieldname": "binary_value",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Value",
+   "options": "\nOn\nOff"
   },
   {
    "fieldname": "uom",

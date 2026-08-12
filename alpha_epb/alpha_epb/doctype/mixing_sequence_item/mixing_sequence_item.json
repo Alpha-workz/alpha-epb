@@ -6,7 +6,6 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "sl_no",
   "sequence",
   "input_item",
   "column_break_wt",
@@ -14,12 +13,6 @@
   "mixing_seq_ref_list"
  ],
  "fields": [
-  {
-   "fieldname": "sl_no",
-   "fieldtype": "Int",
-   "in_list_view": 1,
-   "label": "Sl No"
-  },
   {
    "fieldname": "sequence",
    "fieldtype": "Data",
